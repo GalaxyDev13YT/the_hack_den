@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LETSPLAY</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('https://i.pinimg.com/originals/f1/ed/a4/f1eda4768df8d8135c779772f2833e88.gif') no-repeat center center fixed;
+      background-size: cover;
+      color: #e0e0e0;
+    }
+
+    .sticky-banner {
+      position: sticky;
+      top: 0;
+      background-color: rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      padding: 0.5rem 1rem;
+      z-index: 1000;
+      border-bottom: 1px solid #333;
+      gap: 1rem;
+    }
+
+    .topbar-header-img {
+      max-width: 100px;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .logo-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo-container {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      box-shadow: 0 0 10px 1px white;
+    }
+
+    .logo-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+    }
+
+    .nav-wrapper {
+      display: flex;
+      align-items: center;
+      flex-grow: 1;
+      justify-content: space-between;
+    }
+
+    nav {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: #ccc;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      background-color: #1e1e2e;
+      color: #00bfff;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: auto;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.8);
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem 0;
+    }
+
+    .main-header-img {
+      max-width: 40%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .layout {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    @media (min-width: 768px) {
+      .layout {
+        flex-direction: row;
+      }
+
+      .main-content {
+        flex: 3;
+      }
+
+      .sidebar {
+        flex: 1;
+      }
+    }
+
+    .post {
+      background-image: linear-gradient(to bottom, rgba(28, 28, 43, 0.9), black), url('https://tse3.mm.bing.net/th/id/OIP.mB969rDHlydLdf4jCMbaywHaEK?rs=1&pid=ImgDetMain');
+      background-size: cover;
+      background-position: center;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #000;
+      margin-bottom: 1.5rem;
+    }
+
+    .post1 {
+      background-image: linear-gradient(to bottom, rgba(28, 28, 43, 0.9), black), url('https://wallpaperbat.com/img/8662328-discord-wallpaper.jpg');
+      background-size: cover;
+      background-position: center;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #000;
+      margin-bottom: 1.5rem;
+    }
+
+    .post h2 {
+      color: #99ccff;
+      margin-top: 0;
+    }
+
+    .post p {
+      color: #bbb;
+    }
+
+    .cool-button {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(to bottom, #00f5d4, #000000);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: normal;
+      box-shadow: 0 0 10px rgba(0, 245, 212, 0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+    }
+
+    .cool-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 20px rgba(0, 245, 212, 0.6);
+    }
+
+    .sidebar {
+      background-color: #1a1a2a;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+    }
+
+    .sidebar h3 {
+      color: #8ecae6;
+    }
+
+    /* === Quest / XP UI === */
+    .xp-container {
+      margin: 15px 0;
+    }
+
+    .xp-bar {
+      width: 100%;
+      height: 18px;
+      background: #333;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 5px;
+    }
+
+    .xp-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
+      transition: width 0.5s ease-in-out;
+    }
+
+    .quest-list {
+      margin-top: 20px;
+    }
+
+    .quest {
+      background: #2a2a40;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .quest button {
+      background: #0072ff;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      color: white;
+      transition: 0.3s;
+    }
+
+    .quest button:hover {
+      background: #005cd1;
+    }
+
+    /* Popup */
+    .popup {
+      position: fixed;
+      bottom: -150px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e1e2f;
+      padding: 15px 20px;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.6);
+      opacity: 0;
+      transition: all 0.6s ease-in-out;
+      min-width: 260px;
+      text-align: center;
+      z-index: 9999;
+    }
+
+    .popup.show {
+      bottom: 40px;
+      opacity: 1;
+    }
+
+    .popup .xp-bar {
+      margin-top: 10px;
+      height: 10px;
+    }
+
+    .popup .xp-fill {
+      background: linear-gradient(90deg, #00ff88, #00c6ff);
+    }
+
+    .ad-space {
+      margin: 2rem 0;
+      padding: 1rem;
+      background-color: #131323;
+      border: 1px dashed #555;
+      color: #888;
+      text-align: center;
+      border-radius: 8px;
+      font-style: italic;
+    }
+    
+    .main-header-img {
+      width: 600px !important;  /* force bigger */
+      height: auto !important;  /* keep ratio */
+      max-width: none !important; /* remove scaling cap */
+    }
+
+    .footer {
+      text-align: center;
+      padding: 1.5rem 0;
+      font-size: 0.9rem;
+      color: #666;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+     <img class="main-header-img"
+     src="https://i.imgur.com/T15VeIb.png"
+     alt="CoolTech"
+     style="width: 1005px; height: 145;">
+    </header>
+
+    <div class="layout">
+      <div class="main-content">
+        <div class="post">
+          <h2>How To Use HTML Games/Apps</h2>
+          <p>To use the html games and apps all you need to do is open the hideout in your file manger navigate to the file
+            you want to open and double click it and it should open in your browser.</p>
+          <a href="article1.html" class="cool-button">Jump to Section</a>
+        </div>
+
+        <div class="post1">
+          <h2>Extra Questions</h2>
+          <p>For more info and help click the link in the footer or the button below to join the discord server.</p>
+          <a href="https://discord.gg/v5HWNddmsS" class="cool-button">Discord Server</a>
+        </div>
+
+        <div class="ad-space">
+          [ Ad Space Placeholder ]<br>
+          You can replace this with your own AdSense, image banner, or affiliate box.
+        </div>
+      </div>
+
+      <!-- Sidebar with quest system -->
+      <aside class="sidebar">
+        <h3>Player Progress</h3>
+        <div class="xp-container">
+          <span id="level">Level: 1</span>
+          <div class="xp-bar">
+            <div class="xp-fill" id="xpFill"></div>
+          </div>
+          <span id="xpText">0 / 100 XP</span>
+        </div>
+
+        <div class="quest-list">
+          <h3>Daily Quests</h3>
+          <div class="quest">
+            <span>Beat a Boss</span>
+            <button class="quest-btn" onclick="completeQuest(1); this.innerText='Claimed'">Claim</button>
+
+          </div>
+          <div class="quest">
+            <span>Play 3 Games</span>
+            <button onclick="completeQuest(2); this.innerText='Claimed'">Claim</button>
+
+          </div>
+        </div>
+
+        <h3>Version</h3>
+        <p>v1.3 STABLE</p>
+        <h3>Credits:</h3>
+        <p>owner - galaxydev</p>
+        <p>developer - DoubleF</p>
+      </aside>
+    </div>
+
+    <footer class="footer">
+      <p>placeholder</p>
+    </footer>
+  </div>
+
+  <!-- Popup -->
+  <div class="popup" id="popup">
+    <span id="popupText"></span>
+    <div class="xp-bar">
+      <div class="xp-fill" id="popupXpFill"></div>
+    </div>
+  </div>
+
+  <script>
+    let level = parseInt(localStorage.getItem("level")) || 1;
+    let xp = parseInt(localStorage.getItem("xp")) || 0;
+    let xpNeeded = level * 100;
+    let completedQuests = JSON.parse(localStorage.getItem("completedQuests")) || {};
+
+    const levelSpan = document.getElementById("level");
+    const xpFill = document.getElementById("xpFill");
+    const xpText = document.getElementById("xpText");
+    const popup = document.getElementById("popup");
+    const popupText = document.getElementById("popupText");
+    const popupXpFill = document.getElementById("popupXpFill");
+
+    function updateUI() {
+      levelSpan.textContent = `Level: ${level}`;
+      xpText.textContent = `${xp} / ${xpNeeded} XP`;
+      xpFill.style.width = `${(xp / xpNeeded) * 100}%`;
+      localStorage.setItem("level", level);
+      localStorage.setItem("xp", xp);
+      localStorage.setItem("completedQuests", JSON.stringify(completedQuests));
+    }
+
+    function completeQuest(id) {
+      if (completedQuests[id]) return alert("Quest already completed today!");
+
+      let gainedXp = Math.floor(Math.random() * (75 - 15 + 1)) + 15;
+      xp += gainedXp;
+      completedQuests[id] = true;
+
+      if (xp >= xpNeeded) {
+        xp -= xpNeeded;
+        level++;
+        xpNeeded = level * 100;
+        showPopup(`LEVEL UP! 🎉 You are now Level ${level}`, gainedXp, true);
+      } else {
+        showPopup(`+${gainedXp} XP Earned!`, gainedXp, false);
+      }
+
+      updateUI();
+    }
+
+    function showPopup(message, gainedXp, leveledUp) {
+      popupText.textContent = message;
+      popupXpFill.style.width = `${Math.min((xp / xpNeeded) * 100, 100)}%`;
+
+      popup.classList.add("show");
+      setTimeout(() => {
+        popup.classList.remove("show");
+      }, 4000);
+    }
+
+    updateUI();
+  </script>
+</body>
+
+</html>
