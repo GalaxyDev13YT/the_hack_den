@@ -268,7 +268,36 @@
     .popup .xp-fill {
       background: linear-gradient(90deg, #00ff88, #00c6ff);
     }
-
+    
+    .social-icons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    
+    .social-icons a {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+      background-color: white;
+    }
+    
+    .social-icons a img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; 
+    }
+    
+    .social-icons a:hover {
+      transform: scale(1.1);
+    }
+    
     .ad-space {
       margin: 2rem 0;
       padding: 1rem;
@@ -292,6 +321,7 @@
       font-size: 0.9rem;
       color: #666;
     }
+    
   </style>
 </head>
 
@@ -359,7 +389,20 @@
     </div>
 
     <footer class="footer">
-      <p>placeholder</p>
+      <div class="social-icons">
+    <a href="https://discord.gg/v5HWNddmsS" target="_blank" title="Discord">
+      <img src="https://th.bing.com/th/id/OIP.Qgo8eBVZpDlGx5__GDUO1wHaHa?w=192&h=192&c=7&r=0&o=5&dpr=1.3&pid=1.7" alt="Discord">
+    </a>
+    <a href="https://x.com/RAZEdevelopment" target="_blank" title="Twitter">
+      <img src="https://img.freepik.com/premium-vector/x-new-social-network-black-app-icon-twitter-rebranded-as-x-twitter-s-logo-was-changed_277909-568.jpg?semt=ais_hybrid" alt="Twitter">
+    </a>
+    <a href="google" target="_blank" title="Files">
+      <img src="https://tse4.mm.bing.net/th/id/OIP.LV3bPz0a6ALE--6jql69VAHaHa?rs=1&pid=ImgDetMain" alt="Files">
+    </a>
+    <a href="https://www.youtube.com/@galaxydevgames" target="_blank" title="Youtube">
+      <img src="https://tse4.mm.bing.net/th/id/OIP.N4JsVvAiu2JgD07d_wndAQHaFR?rs=1&pid=ImgDetMain" alt="Youtube">
+    </a>
+  </div>
     </footer>
   </div>
 
