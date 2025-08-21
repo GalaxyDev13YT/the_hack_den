@@ -4,6 +4,7 @@ Credits:
 
 Made by galaxydev and DoubleF
 
-Url:https://thehackden.netlify.app/
+Url:https://galaxydev13yt.github.io/the_hack_den/
 
 v1.3
+
