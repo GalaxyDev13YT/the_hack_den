@@ -326,12 +326,19 @@
 <body>
   <div class="container">
     <header>
-     <img class="main-header-img"
-     src="https://i.imgur.com/T15VeIb.png"
-     alt="CoolTech"
-     style="width: 1005px; height: 145;">
-    </header>
-
+  <img class="main-header-img"
+       src="https://i.imgur.com/T15VeIb.png"
+       alt="CoolTech"
+       style="width: 1005px; height: 145;">
+  <p id="splash-text" style="
+    margin-top: 10px;
+    font-size: 1.2rem;
+    font-style: italic;
+    color: #00e5ff;
+    text-shadow: 0px 0px 10px rgba(0,229,255,0.8);
+  "></p>
+</header>
+    
     <div class="layout">
       <div class="main-content">
         <div class="post">
@@ -460,8 +467,26 @@
         popup.classList.remove("show");
       }, 4000);
     }
+    const splashes = [
+      "Unleash your creativity ✨",
+      "Code. Play. Repeat. 🎮",
+      "Welcome back, explorer 🚀",
+      "The future is built here 🔧",
+      "Level up your imagination 🌌",
+      "Hack the galaxy 🌠",
+      "Stay cool, stay coding ❄️",
+      "Adventure awaits ⚔️",
+      "Building worlds, one line at a time 💻",
+      "Press start to begin ▶️"
+    ];
 
-    updateUI();
+    function setRandomSplash() {
+      const splash = splashes[Math.floor(Math.random() * splashes.length)];
+      document.getElementById("splash-text").textContent = splash;
+    }
+
+      setRandomSplash();
+      updateUI();
   </script>
 </body>
 
