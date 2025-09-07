@@ -1,0 +1,470 @@
+<!-- VT323 Font Loader -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: "VT323", monospace;
+        background: url('https://th.bing.com/th/id/R.7d368d30263eeba4d51bc99c83e308e1?rik=DQq20kkCVFKTZQ&pid=ImgRaw&r=0') no-repeat center center fixed;
+        background-size: cover;
+    }
+
+    .vt323-regular {
+        font-family: "VT323", monospace;
+        font-weight: 400;
+        font-style: normal;
+    }
+
+    .game-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 22px;
+        max-width: 1700px;
+        margin: 48px auto;
+        padding: 0 24px;
+    }
+
+    .game-box {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1/1;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 0 24px 2px #00e5ff44, 0 2px 16px #000a;
+        cursor: pointer;
+        transition: box-shadow 0.18s, border-color 0.18s, transform 0.18s;
+        border: 2.5px solid #00e5ff;
+        background: #222d;
+        display: flex;
+        align-items: stretch;
+        justify-content: stretch;
+        font-family: "VT323", monospace;
+        font-size: 1.35em;
+    }
+
+    .game-box:hover {
+        box-shadow: 0 0 36px 6px #00e5ffcc, 0 6px 32px #000e;
+        border-color: #b800ff;
+        transform: scale(1.04);
+    }
+
+    .game-thumb {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: filter 0.2s;
+        filter: brightness(0.95) saturate(1.07);
+    }
+
+    .game-box:hover .game-thumb {
+        filter: brightness(1.16) saturate(1.3);
+    }
+
+    .game-title {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 0.6em 0;
+        text-align: center;
+        font-weight: bold;
+        font-size: 1.15em;
+        background: linear-gradient(to top, rgba(34, 45, 50, 0.9) 0%, rgba(34, 45, 50, 0.1) 100%);
+        color: #fff;
+        text-shadow: 0 0 18px #00e5ff, 0 0 8px #000;
+        letter-spacing: 0.4px;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        pointer-events: none;
+        z-index: 1;
+        backdrop-filter: blur(2px);
+        font-family: "VT323", monospace;
+        text-transform: uppercase;
+    }
+
+    .popup-game {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(16, 18, 34, .83);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        backdrop-filter: blur(5px);
+        font-family: "VT323", monospace;
+    }
+
+    .popup-game-inner {
+        background: rgba(24, 26, 48, 0.97);
+        border-radius: 24px;
+        box-shadow: 0 0 44px 8px #00e5ff55, 0 6px 32px #000e;
+        width: 96vw;
+        max-width: 1100px;
+        height: 90vh;
+        max-height: 700px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+        border: 2.5px solid #00e5ff;
+        transition: width 0.3s, height 0.3s, max-width 0.3s, max-height 0.3s;
+    }
+
+    .popup-game-titlebar {
+        background: linear-gradient(90deg, #00e5ff 0%, #b800ff 100%);
+        color: #121220;
+        padding: 14px 28px;
+        font-size: 1.3em;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 2px 8px #00e5ff22;
+        font-family: "VT323", monospace;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .popup-game-btns {
+        display: flex;
+        gap: 14px;
+    }
+
+    .popup-game-close,
+    .popup-game-fullscreen {
+        background: transparent;
+        border: none;
+        color: #121220;
+        font-size: 1.4em;
+        cursor: pointer;
+        font-weight: bold;
+        border-radius: 7px;
+        padding: 0 8px;
+        transition: background .15s, color .15s;
+        font-family: "VT323", monospace;
+    }
+
+    .popup-game-close:hover {
+        background: #ff5e5e;
+        color: #fff;
+    }
+
+    .popup-game-fullscreen:hover {
+        background: #b800ff;
+        color: #fff;
+    }
+
+    .popup-game-iframe {
+        flex: 1;
+        border: 0;
+        width: 100%;
+        background: #000;
+        box-shadow: 0 2px 12px #00e5ff44;
+        border-radius: 0 0 24px 24px;
+    }
+
+    .popup-game.fullscreen .popup-game-inner {
+        width: 100vw !important;
+        height: 100vh !important;
+        max-width: none !important;
+        max-height: none !important;
+        border-radius: 0 !important;
+    }
+
+    .auth-header-img {
+        width: 350px !important;
+        height: auto !important;
+        max-width: 90vw !important;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        margin-bottom: 10px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    header {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    #splash-text-auth {
+        margin-top: 10px;
+        font-size: 1.6rem;
+        font-style: italic;
+        color: #00e5ff;
+        text-shadow: 0px 0px 12px rgba(0,229,255,0.8);
+    }
+</style>
+
+<section>
+    <header>
+        <img class="auth-header-img" src="https://i.imgur.com/T15VeIb.png" alt="the_hack_den">
+        <p id="splash-text-auth">107 Games!</p>
+    </header>
+
+    <h1 class="vt323-regular" 
+        style="text-align:center; margin-top:30px; color:#00e5ff; font-size:2.2rem; text-shadow: 0 0 18px #00e5ffAA;">
+        Games
+    </h1>
+
+    <div class="game-grid vt323-regular" id="gameGrid"></div>
+</section>
+
+<script>
+    // ==== EASY GAME ADDING ====
+
+    const games = [{
+            title: "2048",
+            file: "2048.html",
+            thumb: "https://tse1.mm.bing.net/th/id/OIP.iZOp02h3ry7bE1RITpwyegHaHa?cb=ucfimgc2&rs=1&pid=ImgDetMain"
+        },
+        {
+            title: "A Day in the Office",
+            file: "A Day in the Office.html",
+            thumb: "https://i.ytimg.com/vi/2dLD1iWHz9U/maxresdefault.jpg"
+        },
+        {
+            title: "Alien Invasion 3D",
+            file: "Alien Invasion 3d.html",
+            thumb: "https://cdn.cloudflare.steamstatic.com/steam/apps/818640/ss_f1782275ce648a2679090ffe6214c7800775ddca.1920x1080.jpg?t=1572677088"
+        },
+        {
+            title: "Attack Hole",
+            file: "Attack Hole.html",
+            thumb: "https://www.nintendo.com/eu/media/images/assets/nintendo_switch_games/attackhole/2x1_AttackHole_image1280w.jpg"
+        },
+        {
+            title: "Bable Tower",
+            file: "Bable Tower.html",
+            thumb: "https://tse3.mm.bing.net/th/id/OIP.H4iE76PHkRpHEIW38j-6mQHaD4?cb=ucfimgc2&rs=1&pid=ImgDetMain"
+        },
+        {
+            title: "Bad Parenting",
+            file: "Bad Parenting.html",
+            thumb: "https://i.ytimg.com/vi/JIt-fELseuo/maxresdefault.jpg"
+        },
+        {
+            title: "Baldi's Basics",
+            file: "Baldis Basics.html",
+            thumb: "https://img.itch.zone/aW1hZ2UvMjM5ODQxLzE2NTAzMjUucG5n/original/Y8LdOc.png"
+        },
+        {
+            title: "Bank Robbery 2",
+            file: "Bank Robbery 2.html",
+            thumb: "https://tse4.mm.bing.net/th/id/OIP.82RXn2cQ_5bGLndf2Sg_CwHaEK?cb=ucfimgc2&rs=1&pid=ImgDetMain"
+        },
+        {
+            title: "Bendy and the Ink Machine",
+            file: "Bendy and the Ink Machine.html",
+            thumb: "https://wallpaperaccess.com/full/1264220.jpg"
+        },
+        {
+            title: "Bitlife",
+            file: "Bitlife.html",
+            thumb: "https://www.touchtapplay.com/wp-content/uploads/2021/09/BitLife-life-simulator-1.jpg?fit=1200%2C835"
+        },
+        {
+            title: "Blackjack",
+            file: "Blackjack.html",
+            thumb: "https://thvnext.bing.com/th/id/OIP.PEn1zBH8v5LYQUM0d85N4wHaDa?cb=ucfimgc2&rs=1&pid=ImgDetMain"
+        },
+        {
+            title: "Block Blast",
+            file: "Block Blast.html",
+            thumb: "https://static.dosomegaming.com/blockblast/block-blast-2.jpeg"
+        },
+        {
+            title: "Bloons TDS",
+            file: "Bloods TDS 5.html",
+            thumb: "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2023/01/btd-main.jpg"
+        },
+        {
+            title: "Burrito Bison",
+            file: "Burrito Bison.html",
+            thumb: "https://th.bing.com/th/id/R.25655f1c280cc2ffd01462c6d3fbdcea?rik=T4vXNBpCCax68w&pid=ImgRaw&r=0"
+        },
+        {
+            title: "Capybara Clicker",
+            file: "Capybara Clicker.html",
+            thumb: "https://thvnext.bing.com/th/id/OIP.KmqcyKtZoAnin4ZB12R3hwAAAA?cb=ucfimgc2&rs=1&pid=ImgDetMain"
+        },
+        {
+            title: "Car Crash 3",
+            file: "Car Crash 3.html",
+            thumb: "https://tse4.mm.bing.net/th/id/OIP.U1W8N0wd2wlYRibGIVnBZgHaEK?cb=ucfimgc2&rs=1&pid=ImgDetMain"
+        },
+        {
+            title: "Cluster Rush",
+            file: "Cluster Rush.html",
+            thumb: "https://tse2.mm.bing.net/th/id/OIP.KsTBOwXuX8Xd3hTeTgkazAHaEJ?cb=ucfimgc2&rs=1&pid=ImgDetMain"
+        },
+        {
+            title: "COD Black Ops",
+            file: "COD Blacks Ops.html",
+            thumb: "https://i.ytimg.com/vi/Zz9J8kfuk9w/maxresdefault.jpg"
+        },
+        {
+            title: "Cookie Clicker",
+            file: "Cookie Clicker.html",
+            thumb: "https://thvnext.bing.com/th/id/OIP.dTmAPRmmEBm4QTd_E5o_8gHaHa?cb=ucfimgc2&rs=1&pid=ImgDetMain"
+        },
+        {
+            title: "Counterstrike",
+            file: "Counterstrike DS.html",
+            thumb: "https://tse2.mm.bing.net/th/id/OIP.N443p-h_q8MAKFufVwsasgHaJ7?cb=ucfimgc2&rs=1&pid=ImgDetMain"
+        },
+        {
+            title: "Crossy Road",
+            file: "Crossy Road.html",
+            thumb: "https://thvnext.bing.com/th/id/OIP.hPPwm-7TMdssF_C9QxEJRQHaEK?cb=ucfimgc2&rs=1&pid=ImgDetMain"
+        },
+        {
+            title: "Deltarune",
+            file: "Deltarune.html",
+            thumb: "https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/media/image/2021/01/deltarune-2204209.jpg?tf=3840x"
+        },
+        {
+            title: "Doki Doki Literature Club",
+            file: "Doki Doki Literature Club.html",
+            thumb: "https://th.bing.com/th/id/R.11bf3498c7d817623a070b9b4ac84288?rik=Q%2faoVyCZcBNG5Q&pid=ImgRaw&r=0"
+        },
+        {
+            title: "Draw a Car",
+            file: "Draw a Car.html",
+            thumb: "https://th.bing.com/th/id/R.9e6792eba791ec2b75f77509494686be?rik=pPm8NRvrs9ISKQ&pid=ImgRaw&r=0&sres=1&sresct=1"
+        },
+        {
+            title: "Dreadhead Parkour",
+            file: "Dreadhead Parkour.html",
+            thumb: "https://thvnext.bing.com/th/id/OIP.fV66PGa22zDDkDj0vex66wHaEm?cb=ucfimgc2&rs=1&pid=ImgDetMain"
+        },
+        {
+            title: "Drift Boss",
+            file: "Drift Boss.html",
+            thumb: "https://thvnext.bing.com/th/id/OIP.tUfuvJB6phZBsRP6_hsCCwAAAA?cb=ucfimgc2&rs=1&pid=ImgDetMain"
+        },
+        {
+            title: "Drive Mad",
+            file: "Drive Mad.html",
+            thumb: "https://img.tapimg.net/market/images/33bfa288de7de6e05aebdbc0a9dbdc9a.png/appicon"
+        },
+        {
+            title: "Endoparasitic",
+            file: "Endoparasitic.html",
+            thumb: "https://tse4.mm.bing.net/th/id/OIP.j6y6ARi4Th9rZM_YOWSk9gHaEP?cb=ucfimgc2&rs=1&pid=ImgDetMain"
+        },
+        {
+            title: "Escape Road",
+            file: "Escape Road.html",
+            thumb: "https://tse4.mm.bing.net/th/id/OIP._LtYWis-xhB6ABRTMyV57AHaFj?cb=ucfimgc2&rs=1&pid=ImgDetMain"
+        },
+        {
+            title: "Escape Road 2",
+            file: "Escape Road 2.html",
+            thumb: "https://escaperoad.io/cache/data/image/game/escape-road-2-f240x240.webp"
+        },
+        {
+            title: "Find the Alien",
+            file: "Find the Alien.html",
+            thumb: "https://thvnext.bing.com/th/id/OIP.vYzbh3LRTT9Pr8mk0tfoFQHaHa?cb=ucfimgc2&rs=1&pid=ImgDetMain"
+        },
+        {
+            title: "Fireboy and Watergirl",
+            file: "Fireboy and Watergirl 3.html",
+            thumb: "https://th.bing.com/th/id/R.69edc69be09df3ea9fc6f829d11a3a9a?rik=7a5QSj5OYZkArA&pid=ImgRaw&r=0"
+        },
+        {
+            title: "Fnaf 1",
+            file: "Fnaf 1.html",
+            thumb: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/319510/header.jpg?t=1666889251"
+        },
+        {
+            title: "Fnaf 2",
+            file: "Fnaf 2.html",
+            thumb: "https://tse3.mm.bing.net/th/id/OIP.zZ-bvwsckXaDOunBi23E8gHaHa?cb=ucfimgc2&rs=1&pid=ImgDetMain"
+        },
+        {
+            title: "Fnaf 3",
+            file: "Fnaf 3.html",
+            thumb: "https://tse2.mm.bing.net/th/id/OIP.hwKd95C7vMCoVNzd6bHCpQHaHa?cb=ucfimgc2&rs=1&pid=ImgDetMain"
+        },
+        {
+            title: "Fnaf 6",
+            file: "Fnaf 6.html",
+            thumb: "https://play-lh.googleusercontent.com/zDcOTck_4ZjLeJNgil4bpIXUefRUYVqOqlpc8hxeDby8LQh0eZhYDho9U3W_RVg9yuE"
+        },
+        {
+            title: "Fnaf UCN",
+            file: "Fnaf UCN.html",
+            thumb: "https://tse3.mm.bing.net/th/id/OIP.ENTdZ9AFnpXkUnlFSsKUJgHaHa?cb=ucfimgc2&rs=1&pid=ImgDetMain"
+        },
+        // Add more games here:
+        // { title: "Game Name", file: "gamefile.html", thumb: "url_or_path_to_image.png" },
+    ];
+
+    // ==== RENDER GRID ====
+    const grid = document.getElementById('gameGrid');
+    games.forEach(game => {
+        const box = document.createElement('div');
+        box.className = 'game-box vt323-regular';
+        box.onclick = () => openGamePopup(game.file, game.title);
+
+        const thumb = document.createElement('img');
+        thumb.className = 'game-thumb';
+        thumb.src = game.thumb;
+        thumb.alt = game.title;
+
+        const title = document.createElement('div');
+        title.className = 'game-title vt323-regular';
+        title.textContent = game.title;
+
+        box.appendChild(thumb);
+        box.appendChild(title);
+        grid.appendChild(box);
+    });
+
+    // ==== POPUP LOGIC ====
+    function openGamePopup(file, title) {
+        // Remove any open popup
+        document.querySelectorAll('.popup-game').forEach(e => e.remove());
+
+        const popup = document.createElement('div');
+        popup.className = 'popup-game vt323-regular';
+
+        popup.innerHTML = `
+    <div class="popup-game-inner">
+      <div class="popup-game-titlebar vt323-regular">
+        <span>${title}</span>
+        <span class="popup-game-btns">
+          <button class="popup-game-fullscreen vt323-regular" title="Toggle Fullscreen">▢</button>
+          <button class="popup-game-close vt323-regular" title="Close">&times;</button>
+        </span>
+      </div>
+      <iframe class="popup-game-iframe" src="files/${file}" allowfullscreen></iframe>
+    </div>
+  `;
+        document.body.appendChild(popup);
+
+        // Close button
+        popup.querySelector('.popup-game-close').onclick = () => popup.remove();
+        // Overlay click closes popup
+        popup.onclick = (e) => {
+            if (e.target === popup) popup.remove();
+        };
+
+        // Fullscreen button
+        let isFull = false;
+        const fsBtn = popup.querySelector('.popup-game-fullscreen');
+        fsBtn.onclick = () => {
+            isFull = !isFull;
+            popup.classList.toggle('fullscreen', isFull);
+        };
+    }
+</script>
