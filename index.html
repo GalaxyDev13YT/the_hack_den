@@ -95,6 +95,14 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
         }
 
+        .clock {
+            font-size: 2rem;
+            font-family: monospace;
+            color: #00ffcc;
+            text-align: center;
+            margin-top: 20px;
+        }
+
         header {
             text-align: center;
             padding: 2rem 0;
@@ -723,6 +731,8 @@
                     <img class="auth-header-img" src="https://i.imgur.com/T15VeIb.png" alt="the_hack_den">
                     <p id="splash-text-auth">51 Games and Counting!</p>
                     <button onclick="showPage('mainPage')" class="cool-button">Back to Main Page</button>
+                    <button onclick="playRandomGame()" class="cool-button">🎲</button>
+
                 </header>
 
                 <h1 class="vt323-regular" style="text-align:center; margin-top:30px; color:#00e5ff; font-size:2.2rem; text-shadow: 0 0 18px #00e5ffAA;">
@@ -783,11 +793,12 @@
                     </div>
                     <div class="ad-space">
                         [ Ad Space Placeholder ]<br>
-                        DM me on Discord to purchase this ad space for cheap  (DM me for more info too)
+                        DM me on Discord to purchase this ad space for cheap (DM me for more info too)
                     </div>
                 </div>
 
                 <aside class="sidebar">
+                    <div id="clock" class="clock"></div>
                     <h3><span id="usernameDisplay"></span>'s Progress</h3>
                     <div class="xp-container">
                         <span id="level">Level: 1</span>
@@ -811,7 +822,8 @@
                     <p>owner - galaxydev</p>
                     <p>developer - DoubleF</p>
                     <script type="text/javascript" src="https://www.stat-counter.org/count/ik5h"></script><br>
- <a href='https://www.symptoma.es/'>Symptoma.es</a> <script type='text/javascript' src='https://whomania.com/ctr?id=767e8c9fa6376171de4de5d925bd715bece1e774'></script>
+                    <a href='https://www.symptoma.es/'>Symptoma.es</a>
+                    <script type='text/javascript' src='https://whomania.com/ctr?id=767e8c9fa6376171de4de5d925bd715bece1e774'></script>
                     <button id="logoutBtn" style="margin-top: 20px; display: none; padding: 10px; border-radius: 6px; border: none; background: linear-gradient(to bottom, #ff5e5e, #000000); color: white; cursor: pointer; font-weight: bold;">Logout</button>
                 </aside>
             </div>
@@ -844,6 +856,11 @@
 
     <!-- ================= SCRIPT SECTION ================= -->
     <script>
+        function playRandomGame() {
+            const randomGame = games[Math.floor(Math.random() * games.length)];
+            openGamePopup(randomGame.file, randomGame.title);
+        }
+
         const audioPlayer = document.getElementById("audioPlayer");
         const mp3Upload = document.getElementById("mp3Upload");
         const ytInput = document.getElementById("ytInput");
@@ -883,6 +900,7 @@
                 ytFrame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
             }
         }
+
 
         // 🎵 Dragging logic
         let draggingMusic = false,
@@ -1410,7 +1428,7 @@
                 file: "Gunspin.html",
                 thumb: "https://thvnext.bing.com/th/id/OIP.0jeWShzMrDbMsHVz5TEO_wHaHa?cb=ucfimgc2&rs=1&pid=ImgDetMain"
             },
-                       
+
             // Add more games here:
             // { title: "Game Name", file: "gamefile.html", thumb: "url_or_path_to_image.png" },
         ];
@@ -1435,6 +1453,23 @@
             box.appendChild(title);
             grid.appendChild(box);
         });
+
+        function updateClock() {
+            const now = new Date();
+            let h = now.getHours();
+            const m = String(now.getMinutes()).padStart(2, "0");
+            const s = String(now.getSeconds()).padStart(2, "0");
+            const ampm = h >= 12 ? "PM" : "AM";
+
+            // Convert to 12-hour format
+            h = h % 12;
+            h = h ? h : 12; // if 0 → 12
+
+            document.getElementById("clock").textContent = `${h}:${m}:${s} ${ampm}`;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
 
         // ==== POPUP LOGIC ====
         function openGamePopup(file, title) {
